@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,21 +32,21 @@ public class AccountServiceImpl implements AccountService {
     public Account createAccount(AccountInput input) throws Exception {
 
         Account createAccount = new Account().fromDto(input);
-        LocalDateTime currentDate =  LocalDateTime.now();
+        LocalDateTime currentDate = LocalDateTime.now();
         if (input.getAccountNumber() == null) {
-            throw new Exception("insert account number please!");
+            throw new Exception("insert account number please !");
         }
         if (input.getAccountType() == null) {
-            throw new Exception("insert account type please!");
+            throw new Exception("insert account type please !");
         }
         if (input.getAccountBalanceAmount() == null) {
-            throw new Exception("insert account balance amount please!");
+            throw new Exception("insert account balance amount please !");
         }
         if (input.getAccountInterestRate() == null) {
-            throw new Exception("insert account interest rate please!");
+            throw new Exception("insert account interest rate please !");
         }
         if (input.getPersonId() == null) {
-            throw new Exception("insert person id  please!");
+            throw new Exception("insert person id  please !");
         }
         createAccount.setCreatedAt(currentDate);
         // save account's information
@@ -111,24 +112,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    @Scheduled(fixedDelay = 31, initialDelay = 30, timeUnit = TimeUnit.DAYS)
+    //   interest calculation scheduled for one day
+    @Scheduled(fixedDelay = 1, initialDelay = 1, timeUnit = TimeUnit.DAYS)
     public void calculateAccountInterest() {
-//        System.out.println((LocalTime.now()) + " calculate interest rate");
-
+        System.out.println("at "+(LocalTime.now()) + " interest rate calculated ... ");
         List<Account> findInterest = accountRepository.findAll();
 
         for (Account account : findInterest) {
-            if (account.getId() != null) {
-                LocalDateTime currentDate = LocalDateTime.now();
-//              after 1 months
-                LocalDateTime calculateDate = currentDate.now().plusMinutes(10);
-
-                Double calculateInterest = (((account.getAccountBalanceAmount() * account.getAccountInterestRate()) / 100 ) / 12 );
-                account.setInterest(calculateInterest);
-//             account.setUpdatedAt(calculateDate);
-            }
+            LocalDateTime calculateDate = LocalDateTime.now();
+            Double calculateInterest = (((account.getAccountBalanceAmount() * account.getAccountInterestRate()) / 100) / 365);
+            account.setInterest(calculateInterest);
+            account.setUpdatedAt(calculateDate);
             accountRepository.save(account);
-            System.out.println((LocalTime.now()) + " calculate interest rate");
 
         }
     }
