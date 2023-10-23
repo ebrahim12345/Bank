@@ -1,6 +1,6 @@
 package bank.serviceImpl;
 
-import bank.exceptions.ResourceNotFoundException;
+import bank.exceptions.ObjectNotFoundException;
 import bank.repositories.AccountRepository;
 import bank.service.AccountService;
 import ir.bank.domain.account.Account;
@@ -10,13 +10,9 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
         LocalDateTime updateDate = LocalDateTime.now();
 
         Account account = accountRepository.findById(dto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("account id ", dto.getId()));
+                .orElseThrow(() -> new ObjectNotFoundException("account id "+ dto.getId()));
 
         if (dto.getAccountNumber() != null)
             account.setAccountNumber(dto.getAccountNumber());
@@ -83,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
     public HttpStatus deleteAccount(Long id) {
         // delete an account's
         accountRepository.delete(accountRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("account id ", id)));
+                .orElseThrow(() -> new ObjectNotFoundException("account id " +  id)));
         return HttpStatus.OK;
     }
 
@@ -98,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
     @Override // find an account by it's id
     public Account getOneAccount(Long accountId) throws Exception {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("account ", accountId));
+                .orElseThrow(() -> new ObjectNotFoundException("account : "+ accountId));
     }
 
 
@@ -107,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return accountRepository.findAccountByAccountNumber(accountNumber);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("account number : " + accountNumber);
+            throw new ObjectNotFoundException("account number : " + accountNumber);
         }
     }
 

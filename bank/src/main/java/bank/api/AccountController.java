@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+
 @CrossOrigin(origins = "*")
 @RestController
+@ControllerAdvice
 @RequestMapping("api/account")
 @Controller
 // account controller class which has HTTP methods for account services
