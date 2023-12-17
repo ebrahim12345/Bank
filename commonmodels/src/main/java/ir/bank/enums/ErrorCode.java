@@ -1,7 +1,7 @@
 package ir.bank.enums;
 
 /**
- * @author mosio
+ * @author Ebrahim
  */
 public enum ErrorCode {
 

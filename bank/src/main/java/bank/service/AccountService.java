@@ -5,25 +5,23 @@ import ir.bank.domain.account.AccountInput;
 import ir.bank.dto.AccountDto;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
+import java.util.Collection;
 
 
+public interface AccountService<T> {
 
-public interface AccountService<I,O> {
-
-        Account createAccount(AccountInput input) throws Exception;
+        T createAccount(AccountInput input) throws Exception;
 
         HttpStatus deleteAccount(Long id) ;
 
-        Long updateAccount(AccountDto dto) throws Exception;
+        T updateAccount(AccountDto dto) throws Exception;
 
-        List<AccountDto> findAllAccount() throws Exception;
+        Collection<? super T> findAllAccount() throws Exception;
 
-        Account getOneAccount(Long accountId) throws Exception;
+        T getOneAccount(Long accountId) throws Exception;
 
-        Account findAccountByAccountNumber(Integer accountNumber) throws Exception;
+        T findAccountByAccountNumber(Integer accountNumber) throws Exception;
 
-//         void calculateAccountInterest();
 
 }
 

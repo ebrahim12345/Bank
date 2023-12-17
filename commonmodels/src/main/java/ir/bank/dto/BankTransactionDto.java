@@ -7,12 +7,14 @@ import ir.bank.domain.bankTransaction.BankTransactionOutput;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
 import java.util.List;
 
 
 @JsonIgnoreProperties
+@DynamicUpdate
 @Getter
 @Setter
 public class BankTransactionDto {

@@ -7,18 +7,19 @@ import ir.bank.enums.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Getter
 @Setter
 @Entity
 @Cacheable
+@DynamicUpdate
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Table(name = "account" , uniqueConstraints = { @UniqueConstraint(columnNames = "account_number")})
 public class Account implements Serializable {

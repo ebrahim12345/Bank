@@ -16,10 +16,12 @@ import java.util.Date;
 import org.springframework.stereotype.Controller;
 
 
-@CrossOrigin(origins = "*")
-@RestController
-@RequestMapping("api/bankTransaction")
 @Controller
+@RestController
+@ControllerAdvice
+@CrossOrigin(origins = "*")
+@RequestMapping("api/bankTransaction")
+
 // bank transaction controller class which has HTTP methods for bank transaction services
 public class BankTransactionController {
 

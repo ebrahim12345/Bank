@@ -1,5 +1,6 @@
 package bank.api;
 
+import bank.exceptions.EkiNotFoundException;
 import bank.service.AccountService;
 import ir.bank.domain.account.Account;
 import ir.bank.domain.account.AccountInput;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-
-@CrossOrigin(origins = "*")
+@Controller
 @RestController
 @ControllerAdvice
+@CrossOrigin(origins = "*")
 @RequestMapping("api/account")
-@Controller
+
 // account controller class which has HTTP methods for account services
 public class AccountController {
 
@@ -54,7 +55,7 @@ public class AccountController {
 
     //  find an account by it's id
     @RequestMapping(value = "findAccountById/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Account> findAccountById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Object> findAccountById(@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(accountService.getOneAccount(id), HttpStatus.OK);
     }
 
@@ -62,16 +63,16 @@ public class AccountController {
     //  find all accounts
     @RequestMapping(value = "/findAllAccount", method = RequestMethod.GET)
     public ResponseEntity<AccountDto> findAllAccount() throws Exception {
-        if (accountService.findAllAccount().size() < 1) {
-            throw new Exception("accounts list is empty !");
-        }
+//        if (accountService.findAllAccount().size() == 0){
+//            throw new EkiNotFoundException("accounts list is empty !");
+//        }
         return new ResponseEntity(accountService.findAllAccount().stream(), HttpStatus.OK);
     }
 
 
     //  find account by account number
     @RequestMapping(value = "/findAccountByAccountNumber/{accountNumber}", method = RequestMethod.GET)
-    public Account findAccountByAccountNumber(@PathVariable Integer accountNumber) throws Exception {
+    public Object findAccountByAccountNumber(@PathVariable Integer accountNumber) throws Exception {
         return accountService.findAccountByAccountNumber(accountNumber);
     }
 }

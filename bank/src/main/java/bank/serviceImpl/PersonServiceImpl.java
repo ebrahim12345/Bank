@@ -6,6 +6,7 @@ import bank.searches.PersonSearchInfo;
 import bank.searches.PersonSpecification;
 import bank.searches.ResponseList;
 import bank.service.PersonService;
+import bank.util.NullCheck;
 import ir.bank.domain.person.Person;
 import ir.bank.domain.person.PersonInput;
 import ir.bank.dto.PersonDto;
@@ -34,7 +35,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override // creating person
-    public Person createPerson(PersonInput input) throws Exception {
+    public Person create(PersonInput input) throws Exception {
         Person person = new Person().fromDto(input);
 
         if (input.getPersonEmailAddress() == null) {
@@ -60,9 +61,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override  //updating person
-    public Long updatePerson(@RequestBody PersonDto dto) throws Exception {
+    public Long update(@RequestBody PersonDto dto) throws Exception {
         Person person = personRepository.findById(dto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("personId ", dto.getId()));
+        if (! new NullCheck<>(dto).with(PersonDto::getPersonFirstName).isItNull())
+            person.setPersonFirstName(dto.getPersonFirstName());
         if (dto.getPersonFirstName() != null)
             person.setPersonFirstName(dto.getPersonFirstName());
         if (dto.getPersonLastName() != null)
@@ -97,7 +100,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override // find all people
-    public List<Person> findAllPerson() throws Exception {
+    public List<Person> findAll() throws Exception {
         try {
             // print list of people
             return personRepository.findAll();
@@ -112,7 +115,6 @@ public class PersonServiceImpl implements PersonService {
         List<Person> list = null;
         Page<Person> pages = null;
         if (searchInfo.getPageNumber() == null) {
-
             pages = new PageImpl<>(personRepository.findAll(personSpecification.getPerson(searchInfo)));
         } else {
             if (searchInfo.getCount() == null)
@@ -135,6 +137,12 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return null;
+    }
+
+
+    @Override
+    public Person searchPersonByMobileNumber(String personMobileNumber) {
+        return personRepository.findAccountByPersonMobileNumber(personMobileNumber);
     }
 }
 

@@ -4,7 +4,7 @@ package bank.exceptions;
 import ir.bank.enums.ErrorCode;
 
 /**
- * @author mosio
+ * @author Ebrahim
  */
 public class EkiNotFoundException extends EkiRecoverableException {
 

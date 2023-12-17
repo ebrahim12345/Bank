@@ -1,5 +1,6 @@
 package bank.serviceImpl;
 
+import bank.exceptions.EkiNotFoundException;
 import bank.exceptions.ObjectNotFoundException;
 import bank.repositories.AccountRepository;
 import bank.service.AccountService;
@@ -74,6 +75,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
+
     @SneakyThrows
     @Override //deleting an account
     public HttpStatus deleteAccount(Long id) {
@@ -87,28 +89,30 @@ public class AccountServiceImpl implements AccountService {
     @Override // find all accounts
     public List<Account> findAllAccount() throws Exception {
         // print list of account
+        if (accountRepository.findAll().size() == 0){
+            throw new ObjectNotFoundException("accounts list is empty !");
+        }
         return accountRepository.findAll();
+
     }
 
 
     @Override // find an account by it's id
     public Account getOneAccount(Long accountId) throws Exception {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new ObjectNotFoundException("account : "+ accountId));
+                .orElseThrow(() -> new ObjectNotFoundException("not found account : "+ accountId));
     }
 
 
     @Override // find an account by account number
     public Account findAccountByAccountNumber(Integer accountNumber) throws Exception {
-        try {
-            return accountRepository.findAccountByAccountNumber(accountNumber);
-        } catch (Exception e) {
-            throw new ObjectNotFoundException("account number : " + accountNumber);
-        }
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new ObjectNotFoundException("not found account number : "+ accountNumber));
+          return account;
     }
 
 
-    //   interest calculation scheduled for one day
+    //   interest calculation scheduled daily
     @Scheduled(fixedDelay = 1, initialDelay = 1, timeUnit = TimeUnit.DAYS)
     public void calculateAccountInterest() {
         System.out.println("at "+(LocalTime.now()) + " interest rate calculated ... ");
@@ -123,6 +127,7 @@ public class AccountServiceImpl implements AccountService {
 
         }
     }
+
 }
 
 

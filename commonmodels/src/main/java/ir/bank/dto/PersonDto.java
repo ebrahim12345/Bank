@@ -6,8 +6,10 @@ import ir.bank.domain.person.Person;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.DynamicUpdate;
 
 
+@DynamicUpdate
 @Getter
 @Setter
 @Accessors(chain = true)

@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -35,7 +32,7 @@ public class PersonController {
             @RequestBody PersonInput input) throws Exception {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(this.personService.createPerson(input));
+                .body(this.personService.create(input));
     }
 
 
@@ -43,7 +40,7 @@ public class PersonController {
     @PutMapping(value = "updatePerson", headers = "Accept=application/json;charset=UTF-8")
     public ResponseEntity<Person> updatePerson(
             @RequestBody PersonDto dto) throws Exception {
-        return new ResponseEntity(personService.updatePerson(dto), HttpStatus.OK);
+        return new ResponseEntity(personService.update(dto), HttpStatus.OK);
     }
 
 
@@ -57,15 +54,22 @@ public class PersonController {
 
     //  get one person
     @RequestMapping(value = "findPersonById/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Person> findPersonById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Object> findPersonById(@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(personService.getOnePerson(id), HttpStatus.OK);
     }
 
 
-    //  get all people
+    // search person by mobile number
+    @RequestMapping(value = "findPersonByMobileNumber/{personMobileNumber}", method = RequestMethod.GET)
+    public ResponseEntity<Object> findPersonByMobileNumber(@PathVariable String personMobileNumber){
+        return new ResponseEntity<>(personService.searchPersonByMobileNumber(personMobileNumber), HttpStatus.OK);
+    }
+
+
+    //  get all people  TODO check this method
     @RequestMapping(value = "findAllPeople", method = RequestMethod.GET)
     public ResponseEntity<Person> findAllPeople() throws Exception {
-        return new ResponseEntity(personService.findAllPerson().stream(), HttpStatus.OK);
+        return new ResponseEntity(personService.findAll().stream().distinct(), HttpStatus.OK);// findAll().stream().distinct() to remove duplicate
     }
 
 

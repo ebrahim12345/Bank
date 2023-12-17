@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class AccountDto {
     private Integer accountBalanceAmount;
     private Double accountInterestRate;
     private AccountType accountType;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Person personId;
 
 

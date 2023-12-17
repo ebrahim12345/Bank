@@ -8,16 +8,14 @@ import ir.bank.domain.account.Account;
 import ir.bank.domain.bankTransaction.BankTransaction;
 import ir.bank.domain.bankTransaction.BankTransactionInput;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.Date;
 
 
 @Service
-public class BankTransactionServiceImpl implements BankTransactionService {
+public class BankTransactionServiceImpl<T> implements BankTransactionService {
 
 
     @Autowired
@@ -109,7 +107,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         if (input.getWithdrawAmountMoney() <= 0)
             throw new Exception("مبلغ برداشت نامعتبر است !");
 
-        if (withdrawFrom.getAccountBalanceAmount() > input.getWithdrawAmountMoney() - 1)
+        if (withdrawFrom.getAccountBalanceAmount() > input.getWithdrawAmountMoney() - 1000)
             try {
                 Integer accountBalance = withdrawFrom.getAccountBalanceAmount();
                 accountBalance -= input.getWithdrawAmountMoney();

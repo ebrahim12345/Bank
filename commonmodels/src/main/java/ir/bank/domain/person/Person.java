@@ -4,15 +4,16 @@ package ir.bank.domain.person;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
-
 @Setter
 @Entity
+@DynamicUpdate
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Table(name = "person", uniqueConstraints = { @UniqueConstraint(columnNames = "person_social_code"),

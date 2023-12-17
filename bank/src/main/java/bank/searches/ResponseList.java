@@ -1,12 +1,13 @@
 package bank.searches;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ResponseList {
     private Integer totalPage;
     private Long totalCount;
     private  Integer pageNo;
-    private List<Object> result;
+    private Collection<Object> result;
 
     public Integer getTotalPage() {
         return totalPage;
@@ -35,7 +36,7 @@ public class ResponseList {
         return this;
     }
 
-    public List<Object> getResult() {
+    public Collection<Object> getResult() {
         return result;
     }
 

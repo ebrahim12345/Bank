@@ -18,6 +18,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
 
     Optional<Account> findById(Long id);
 
+
     @Query("SELECT a FROM Account a WHERE a.accountNumber = :accountNumber")
     Account findAccountByAccountNumber(@Param("accountNumber") Integer accountNumber);
 

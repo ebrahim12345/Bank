@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class AccountInput {
+public class AccountInput<T> {
 
     private Long id;
     private Integer accountNumber;
